@@ -18,14 +18,14 @@ $products = $query->fetchAll(PDO::FETCH_ASSOC);
         <th>Actions</th>
     </tr>
     <?php foreach ($products as $product): ?>
-        <tr>
-            <td><?php echo htmlspecialchars($product['name']); ?></td>
-            <td>$<?php echo htmlspecialchars($product['price']); ?></td>
-            <td><?php echo htmlspecialchars($product['category_id']); ?></td>
-            <td>
-                <a href="edit_product.php?id=<?php echo $product['id']; ?>">Edit</a>
-                <a href="delete_product.php?id=<?php echo $product['id']; ?>">Delete</a>
-            </td>
-        </tr>
+    <tr>
+        <td><?php echo htmlspecialchars($product['name']); ?></td>
+        <td>¢<?php echo htmlspecialchars($product['price']); ?></td>
+        <td><?php echo htmlspecialchars($product['category_id']); ?></td>
+        <td>
+            <a href="edit_product.php?id=<?php echo $product['id']; ?>">Edit</a>
+            <a href="delete_product.php?id=<?php echo $product['id']; ?>">Delete</a>
+        </td>
+    </tr>
     <?php endforeach; ?>
 </table>

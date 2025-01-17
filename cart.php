@@ -2,26 +2,41 @@
 session_start();
 include 'includes/db.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit();
+// Fetch products in the cart
+$cart = $_SESSION['cart'] ?? [];
+
+if ($cart) {
+    $placeholders = implode(',', array_fill(0, count($cart), '?'));
+    $stmt = $pdo->prepare("SELECT * FROM products WHERE id IN ($placeholders)");
+    $stmt->execute(array_keys($cart));
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
-// Fetch cart items for the user
-$stmt = $pdo->prepare('SELECT cart.*, products.name, products.price FROM cart JOIN products ON cart.product_id = products.id WHERE user_id = ?');
-$stmt->execute([$_SESSION['user_id']]);
-$cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Handle cart actions (update quantities, remove items, etc.)
 ?>
 
-<div class="cart">
-    <?php foreach ($cartItems as $item): ?>
-        <div class="cart-item">
-            <h2><?php echo htmlspecialchars($item['name']); ?></h2>
-            <p>Price: $<?php echo htmlspecialchars($item['price']); ?></p>
-            <p>Quantity: <?php echo htmlspecialchars($item['quantity']); ?></p>
-            <!-- Update quantity and remove item form -->
-        </div>
-    <?php endforeach; ?>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+</head>
+
+<body>
+    <h1>Your Cart</h1>
+    <?php if ($products): ?>
+        <ul>
+            <?php foreach ($products as $product): ?>
+                <li>
+                    <?php echo htmlspecialchars($product['name']); ?> -
+                    Quantity: <?php echo $cart[$product['id']]; ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p>Your cart is empty.</p>
+    <?php endif; ?>
+    <a href="index.php">Continue Shopping</a>
+</body>
+
+</html>
