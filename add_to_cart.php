@@ -15,5 +15,5 @@ if ($product_id) {
     }
 }
 
-header('Location: cart.php');
+header('Location: index.php');
 exit();

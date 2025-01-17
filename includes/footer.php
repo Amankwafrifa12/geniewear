@@ -1,6 +1,6 @@
 </main>
 <footer>
-    <p>&copy; 2025 E-commerce Site</p>
+    <p><?php echo date('Y'); ?> E-commerce Site</p>
 </footer>
 </body>
 

@@ -4,6 +4,7 @@ include 'includes/db.php';
 
 // Fetch products in the cart
 $cart = $_SESSION['cart'] ?? [];
+$products = []; // Initialize $products as an empty array
 
 if ($cart) {
     $placeholders = implode(',', array_fill(0, count($cart), '?'));
@@ -24,7 +25,7 @@ if ($cart) {
 
 <body>
     <h1>Your Cart</h1>
-    <?php if ($products): ?>
+    <?php if (!empty($products)): ?>
         <ul>
             <?php foreach ($products as $product): ?>
                 <li>
